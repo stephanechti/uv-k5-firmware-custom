@@ -71,7 +71,7 @@ ENABLE_MESSENGER_NOTIFICATION			= 0
 ENABLE_4732 ?=0
 ENABLE_DOPPLER               =0
 #############################################################
-PACKED_FILE_SUFFIX = LOSEHU125
+PACKED_FILE_SUFFIX = LOSEHU126
 
 ifeq ($(ENABLE_CHINESE_FULL),0)
     ifeq ($(ENABLE_ENGLISH),1)
