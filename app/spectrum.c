@@ -160,23 +160,7 @@ static uint8_t DBm2S(int dbm) {
     return i;
 }
 
-uint16_t registersVault[128] = {0};
-#ifdef ENABLE_DOPPLER
 
-static void RegBackup() {
-    for (int i = 0; i < 128; ++i) {
-        registersVault[i] = BK4819_ReadRegister(i);
-
-    }
-}
-#endif
-#ifdef ENABLE_DOPPLER
-static void RegRestore() {
-    for (int i = 0; i < 128; ++i) {
-        BK4819_WriteRegister(i, registersVault[i]);
-    }
-}
-#endif
 static void ToggleAudio(bool on) {
 //    if (on == audioState) {
 //        return;
@@ -203,6 +187,8 @@ void SetTxF(uint32_t f, bool precise) {
 
 #ifdef ENABLE_DOPPLER
 static void ToggleTX(bool on) {
+    uint16_t registersVault[128] ;
+
     if (isTransmitting == on) {
         return;
     }
@@ -220,8 +206,16 @@ static void ToggleTX(bool on) {
         AUDIO_AudioPathOff();
 
         SetTxF(fMeasure, true);
-        RegBackup();
 
+        
+
+    for (int i = 0; i < 128; ++i) 
+        registersVault[i] = BK4819_ReadRegister(i);
+
+
+
+
+        
         BK4819_WriteRegister(BK4819_REG_47, 0x6040);
         BK4819_WriteRegister(BK4819_REG_7E, 0x302E);
         BK4819_WriteRegister(BK4819_REG_50, 0x3B20);
@@ -256,7 +250,9 @@ static void ToggleTX(bool on) {
         BK4819_WriteRegister(BK4819_REG_51, 0x904A);
 //        SYSTEM_DelayMs(200);
         BK4819_SetupPowerAmplifier(0, 0);
-        RegRestore();
+            for (int i = 0; i < 128; ++i) {
+        BK4819_WriteRegister(i, registersVault[i]);
+    }
 //TODO:发射频率
         fMeasure = satellite_data.DownLink;
         SetTxF(fMeasure, true);
@@ -1140,12 +1136,6 @@ void OnKeyDownStill(KEY_Code_t key) {
             UpdateRssiTriggerLevel(false);
             break;
         case KEY_5:
-//#ifdef ENABLE_DOPPLER
-//            if (DOPPLER_MODE) {
-//
-//
-//            } else
-//#endif
 
 
             FreqInput();
@@ -1338,7 +1328,7 @@ static void RenderStill() {
     uint8_t offset = PAD_LEFT;
     uint8_t row = 4;
     uint8_t DATA_LINE;
-    uint8_t SHOW_LINE=4;
+    uint8_t SHOW_LINE = 4;
 #ifdef ENABLE_DOPPLER
     if (DOPPLER_MODE)SHOW_LINE = 3;
 #endif
@@ -1633,14 +1623,7 @@ void APP_RunSpectrum() {
     }
 #endif
     while (isInitialized) {
-//#ifdef ENABLE_DOPPLER
-//
-//        if (DOPPLER_MODE) {
-//            satellite_data.DownLink=43850000;
-//            SetF(satellite_data.DownLink);
-//            currentFreq = satellite_data.DownLink;
-//        }
-//#endif
+
 #ifdef ENABLE_DOPPLER
         if (DOPPLER_MODE&&!isTransmitting&&currentFreq!=satellite_data.DownLink) {
             SetF(satellite_data.DownLink);
