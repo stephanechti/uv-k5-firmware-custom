@@ -6,7 +6,7 @@
 
 struct satellite_t satellite;
 struct satellite_d satellite_data;
-bool DOPPLER_FLAG = true;
+//bool DOPPLER_FLAG = true;
 //0x02BA0~0x2BA9 10B,卫星名称,首字符在前,最多9个英文，最后一个为'\0'
 //
 //
@@ -41,13 +41,13 @@ void INIT_DOPPLER_DATA() {
     if (satellite.name[9] != 0 ||
         !(satellite.name[0] >= 32 && satellite.name[0] <= 126)
             ) {
-        DOPPLER_FLAG = 0;
+//        DOPPLER_FLAG = 0;
         return;
     }
 
     for (int i = strlen(satellite.name); i < 10; i++)
         if (satellite.name[i] != 0) {
-            DOPPLER_FLAG = 0;
+//            DOPPLER_FLAG = 0;
             return;
         }
 

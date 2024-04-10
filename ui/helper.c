@@ -32,11 +32,7 @@
 #define IS_BIT_SET(byte, bit) ((byte>>bit) & (1))
 
 void set_bit(uint8_t *value, uint8_t bit_position) {
-//    if (bit_value == 0) {
-//        *value = *value & ~(1 << bit_position);
-//    } else {
     *value = *value | (1 << bit_position);
-//    }
 }
 
 uint8_t is_chn(uint8_t num) {
@@ -48,7 +44,6 @@ uint8_t is_chn(uint8_t num) {
     else if (num > 10 && num < 32)return num - 2;
     else if (num > 126 && num <= 233)return num - 97;
     else return 255;
-
 #endif
 }
 
@@ -148,22 +143,15 @@ void UI_PrintStringSmall(const char *pString, uint8_t Start, uint8_t End, uint8_
 #else
 
     bool flag_move = 0;
-
     uint8_t Length = strlen(pString);
 
     if (show_move_flag) {
 #if ENABLE_CHINESE_FULL == 0
         Length = Length > 7 ? 7 : Length;
-//#else
-//        #ifdef ENABLE_PINYIN == 0
-////        if(PINYIN_NUM==0) //拼音判断
-//            #endif
-//        Length = Length > 14 ? 14 : Length;
 
 #endif
         flag_move = 1;
         show_move_flag = 0;
-
     }
     uint8_t sum_pixel = 0;
     uint16_t true_char[Length];

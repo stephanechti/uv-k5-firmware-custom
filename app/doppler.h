@@ -27,6 +27,6 @@ void INIT_DOPPLER_DATA();
 int32_t UNIX_TIME(uint8_t time2[6]);
 
 extern struct satellite_d satellite_data;
-extern bool DOPPLER_FLAG;
+//extern bool DOPPLER_FLAG;
 extern struct satellite_t satellite;
 #endif

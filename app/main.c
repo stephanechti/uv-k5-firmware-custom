@@ -658,30 +658,30 @@ static void MAIN_Key_UP_DOWN(bool bKeyPressed, bool bKeyHeld, int8_t Direction) 
 #ifdef ENABLE_DOPPLER
         if (Direction==-1) {
 
-        if (!DOPPLER_FLAG) {
-            BACKLIGHT_TurnOn();
-            UI_DisplayClear();
-#ifndef ENABLE_ENGLISH
-//获取数据
-            UI_PrintStringSmall("\xD0\xB4\xC8\xEB\xCA\xFD\xBE\xDD:", 0, 127, 2);
-#else
-            UI_PrintStringSmall("GET DATA:", 0, 127, 2);
-#endif
-            UI_PrintStringSmall("k5.vicicode.com", 0, 127, 4);
-
-            ST7565_BlitFullScreen();
-            uint8_t cnt_i = 200;
-            while (cnt_i) {
-
-                SYSTEM_DelayMs(10);
-cnt_i--;
-            }
-
-        }else{
+//        if (!DOPPLER_FLAG) {
+//            BACKLIGHT_TurnOn();
+//            UI_DisplayClear();
+//#ifndef ENABLE_ENGLISH
+////获取数据
+//            UI_PrintStringSmall("\xD0\xB4\xC8\xEB\xCA\xFD\xBE\xDD:", 0, 127, 2);
+//#else
+//            UI_PrintStringSmall("NO DATA:", 0, 127, 2);
+//#endif
+//            UI_PrintStringSmall("k5.vicicode.com", 0, 127, 4);
+//
+//            ST7565_BlitFullScreen();
+//            uint8_t cnt_i = 200;
+//            while (cnt_i) {
+//
+//                SYSTEM_DelayMs(10);
+//cnt_i--;
+//            }
+//
+//        }else{
             DOPPLER_MODE=1;
             APP_RunSpectrum();
             gRequestDisplayScreen = DISPLAY_MAIN;
-            }
+//            }
         }
 #endif
         return;
