@@ -126,25 +126,25 @@ void UI_PrintStringSmall(const char *pString, uint8_t Start, uint8_t End, uint8_
 
 #ifdef ENABLE_ENGLISH
     const size_t Length = strlen(pString);
-	size_t       i;
+    size_t       i;
 
-	const unsigned int char_width   = ARRAY_SIZE(gFontSmall[0]);
-	const unsigned int char_spacing = char_width + 1;
+    const unsigned int char_width   = ARRAY_SIZE(gFontSmall[0]);
+    const unsigned int char_spacing = char_width + 1;
 
-	if (End > Start)
-		Start += (((End - Start) - (Length * char_spacing)) + 1) / 2;
+    if (End > Start)
+        Start += (((End - Start) - (Length * char_spacing)) + 1) / 2;
 
 
-	uint8_t            *pFb         = gFrameBuffer[Line] + Start;
-	for (i = 0; i < Length; i++)
-	{
-		if (pString[i] > ' ')
-		{
-			const unsigned int index = (unsigned int)pString[i] - ' ' - 1;
-			if (index < ARRAY_SIZE(gFontSmall))
-				memmove(pFb + (i * char_spacing) + 1, &gFontSmall[index], char_width);
-		}
-	}
+    uint8_t            *pFb         = gFrameBuffer[Line] + Start;
+    for (i = 0; i < Length; i++)
+    {
+        if (pString[i] > ' ')
+        {
+            const unsigned int index = (unsigned int)pString[i] - ' ' - 1;
+            if (index < ARRAY_SIZE(gFontSmall))
+                memmove(pFb + (i * char_spacing) + 1, &gFontSmall[index], char_width);
+        }
+    }
 #else
 
     bool flag_move = 0;
@@ -210,7 +210,8 @@ void UI_PrintStringSmall(const char *pString, uint8_t Start, uint8_t End, uint8_
                         uint8_t gFontSmall_More[12] = {0};
                         for (int j = 0; j < 12; ++j) {
                             if (j < 6) gFontSmall_More[j] = (gFontSmall[index][j] & 0x1F) << 3;//00011111
-                            else gFontSmall_More[j] = (gFontSmall[index][j - 6] & 0XE0)
+                            else
+                                gFontSmall_More[j] = (gFontSmall[index][j - 6] & 0XE0)
                                         >> 5;//|(0xFB& *(pFb1+ now_pixel + 1+j-6));//11100000
                         }
                         memcpy(pFb + now_pixel + 1, &gFontSmall_More[0], 6);
@@ -220,8 +221,26 @@ void UI_PrintStringSmall(const char *pString, uint8_t Start, uint8_t End, uint8_
                 }
 #else
                 if (index < 94) {
-                    uint8_t read_gFontSmall[6];
+                                        uint8_t read_gFontSmall[6];
+
+                    if(true_char[i] >='0'&&true_char[i]<='9') {
+
+                  uint8_t font_num[10][6]={
+                          {0x3E, 0x41, 0x41, 0x41, 0x41, 0x3E},    // '0'
+                {0x00, 0x40, 0x42, 0x7F, 0x40, 0x40},    // '1'
+                {0x62, 0x51, 0x51, 0x49, 0x49, 0x46},    // '2'
+                {0x22, 0x41, 0x49, 0x49, 0x49, 0x36},    // '3'
+                {0x18, 0x14, 0x12, 0x11, 0x7F, 0x10},    // '4'
+                {0x27, 0x45, 0x45, 0x45, 0x45, 0x39},    // '5'
+                {0x3E, 0x49, 0x49, 0x49, 0x49, 0x32},    // '6'
+                {0x01, 0x01, 0x71, 0x09, 0x05, 0x03},    // '7'
+                {0x36, 0x49, 0x49, 0x49, 0x49, 0x36},    // '8'
+                {0x46, 0x49, 0x49, 0x49, 0x29, 0x1E},    // '9'
+                    };
+                  memcpy(read_gFontSmall, font_num[true_char[i]-'0'], 6);
+                  }else
                     EEPROM_ReadBuffer(0x0267C + index * 6, read_gFontSmall, 6);
+
                     if (flag_move) {
                         uint8_t gFontSmall_More[12] = {0};
 
@@ -282,10 +301,10 @@ void UI_PrintStringSmall(const char *pString, uint8_t Start, uint8_t End, uint8_
                     if (IS_BIT_SET(gFontChinese_out[local], local_bit))
 //                        set_bit(&gFontChinese[k], j, 1);
 
-                    //                        set_bit(&gFontChinese[k], j, 1);
+                        //                        set_bit(&gFontChinese[k], j, 1);
 
-                        if(k<CHN_FONT_WIDTH)                         set_bit(pFb + now_pixel + 1+k, j);
-                        else set_bit(pFb1 + now_pixel + 1+k-CHN_FONT_WIDTH, j);
+                        if (k < CHN_FONT_WIDTH) set_bit(pFb + now_pixel + 1 + k, j);
+                        else set_bit(pFb1 + now_pixel + 1 + k - CHN_FONT_WIDTH, j);
 
                     local_bit++;
                     if (local_bit == 8) {
@@ -443,8 +462,8 @@ void GUI_DisplaySmallest(const char *pString, uint8_t x, uint8_t y,
         for (int i = 0; i < 3; ++i) {
             pixels = read_gFont3x5[i];
 #else
-            for (int i = 0; i < 3; ++i) {
-                pixels = gFont3x5[c][i];
+        for (int i = 0; i < 3; ++i) {
+            pixels = gFont3x5[c][i];
 #endif
             for (int j = 0; j < 6; ++j) {
                 if (pixels & 1) {
@@ -461,7 +480,7 @@ void GUI_DisplaySmallest(const char *pString, uint8_t x, uint8_t y,
 }
 
 void show_uint32(uint32_t num, uint8_t line) {
-    memset(gFrameBuffer[line],0,128);
+    memset(gFrameBuffer[line], 0, 128);
     char str[20] = {0};
     sprintf(str, "%d", num);
     UI_PrintStringSmall(str, 0, 127, line);
@@ -469,7 +488,7 @@ void show_uint32(uint32_t num, uint8_t line) {
 }
 
 void show_hex(uint32_t num, uint8_t line) {
-    memset(gFrameBuffer[line],0,128);
+    memset(gFrameBuffer[line], 0, 128);
     char str[20] = {0};
     sprintf(str, "%X", num);
     UI_PrintStringSmall(str, 0, 127, line);
