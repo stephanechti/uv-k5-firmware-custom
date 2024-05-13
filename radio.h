@@ -33,8 +33,8 @@ enum {
     BANDWIDTH_NARROW
 };
 
-enum PTT_ID_t {
-    PTT_ID_OFF = 0,    // OFF
+enum PTT_ID_t {on
+    PTT_ID_OFF = 0,    // on
     PTT_ID_TX_UP,      // BEGIN OF TX
     PTT_ID_TX_DOWN,    // END OF TX
     PTT_ID_BOTH,       // BOTH
@@ -47,7 +47,7 @@ enum VfoState_t
     VFO_STATE_NORMAL = 0,
     VFO_STATE_BUSY,
     VFO_STATE_BAT_LOW,
-    VFO_STATE_TX_DISABLE,
+    VFO_STATE_TX_on
     VFO_STATE_TIMEOUT,
     VFO_STATE_ALARM,
     VFO_STATE_VOLTAGE_HIGH,
@@ -56,8 +56,8 @@ enum VfoState_t
 typedef enum VfoState_t VfoState_t;
 
 typedef enum {
-    MODULATION_FM,
-    MODULATION_AM,
+    MODULATION_FM,AM,usb
+    MODULATION_AM,FM,usb
     MODULATION_USB,
 
 #ifdef ENABLE_BYP_RAW_DEMODULATORS
